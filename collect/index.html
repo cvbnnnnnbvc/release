@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>便签</title>
+<style>
+body {
+    background-color: rgb(46, 73, 109);
+    color: #ffffff;
+}
+.txtFileName {
+    color: rgb(68, 0, 0);
+    background-color: antiquewhite;
+}
+
+.txtFileContent {
+    color: rgb(255, 255, 255);
+    background-color: rgb(45, 33, 145);
+    padding: 10px;
+    word-break: break-all;
+    white-space: pre-wrap; 
+}
+
+.greenBox {
+    background-color: rgb(135, 135, 135);
+    padding: 10px;
+    margin-bottom: 10px;
+}
+</style>
+</head>
+<body>
+
+<h3>便签</h3>
+<div id="embeddedTexts">
+<!-- 在这里嵌入文本文件内容 -->
+</div>
+
+<script>
+fetchTextFiles();
+
+function fetchTextFiles() {
+    const baseUrl = 'https://cvbnnnnnbvc.github.io/text/message/text/';
+    let i = 0;
+    const embeddedTexts = document.getElementById('embeddedTexts');
+    
+    function fetchNext() {
+        const txtFile = `${baseUrl}${i}.txt`;
+        
+        fetch(txtFile)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('File not found');
+                }
+                return response.text();
+            })
+            .then(text => {
+                const preElement = document.createElement('pre');
+                preElement.classList.add('greenBox'); 
+                preElement.innerHTML = `<span class="txtFileName">${i}.txt:</span><br><div class="txtFileContent">${text}</div>`;
+                embeddedTexts.appendChild(preElement);
+                i++;
+                fetchNext();
+            })
+            .catch(error => {
+                console.error('获取文本文件内容时出错：', error);
+            });
+    }
+    
+    fetchNext();
+}
+</script>
+</body>
+</html>
