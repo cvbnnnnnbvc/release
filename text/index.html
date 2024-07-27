@@ -3,38 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>文本</title>
-    <style>
-        body {
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            margin: 0;
-            background-color: black;
-            color: #00fdf5;
-            font-weight: bold; 
-        }
-        textarea {
-            width: 200px;
-            height: 100px;
-            border-radius: 10px;
-            font-size: 20px;
-            color: #00fdf5;
-            background-color: black;
-            font-weight: bold;
-            border: none;
-        }
-        #outputText {
-            margin-top: 20px;
-            width: 300px;
-        }
-    </style>
+    <title>文本加解密</title>
 </head>
 <body>
-    <textarea id="outputText" readonly></textarea>
     <script>
         function stringToBinary(input_string) {
             return Array.from(input_string).map(char => char.charCodeAt(0).toString(2)).join(' ');
@@ -68,19 +39,21 @@
 
         function processQueryParams() {
             const { text, options } = getQueryParams();
-            const outputTextElement = document.getElementById("outputText");
+            let result = '';
 
             if (text) {
-                let result = '';
                 if (options === '1') {
                     result = encryptText(text);
                 } else if (options === '2') {
                     result = decryptText(text);
+                } else {
+                    result = '无效的选项参数';
                 }
-                outputTextElement.value = result;
             } else {
-                outputTextElement.value = '未提供文本';
+                result = '未提供文本';
             }
+
+            document.body.textContent = result;
         }
 
         window.onload = processQueryParams;
