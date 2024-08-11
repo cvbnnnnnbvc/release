@@ -79,17 +79,6 @@
         a {
             word-wrap: break-word;
         }
-
-         #request-permission {
-            background-color: #9fc6cf; 
-            border: none; 
-            color: white; 
-            padding: 10px 20px; 
-            font-size: 16px; 
-            cursor: pointer;
-            border-radius: 25px; 
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5); 
-        }
     </style>
     <script>
 (function(w, d) {
@@ -160,30 +149,5 @@
    分享给更多的人，让网站更活跃！
 </div>
 
-    <script>
-        document.getElementById('request-permission').addEventListener('click', function() {
-            if ('Notification' in window) {
-                // 检查当前通知权限状态
-                if (Notification.permission === 'granted') {
-                    console.log('通知权限已授予');
-                } else if (Notification.permission === 'denied') {
-                    console.log('通知权限已拒绝');
-                } else {
-                    // 请求通知权限
-                    Notification.requestPermission().then(function(permission) {
-                        if (permission === 'granted') {
-                            console.log('通知权限已授予');
-                        } else {
-                            console.log('通知权限未授予');
-                        }
-                    }).catch(function(error) {
-                        console.error('请求通知权限失败:', error);
-                    });
-                }
-            } else {
-                console.log('浏览器不支持通知 API');
-            }
-        });
-    </script>
 </body>
 </html>
