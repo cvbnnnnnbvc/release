@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>文本记录</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 20px;
+        }
+        input:focus {
+            border-color: #66afe9;
+            outline: 0;
+            -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgba(102, 175, 233, .6);
+            box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgba(102, 175, 233, .6);
+        }
+        .box {
+            margin: 0 auto; 
+            max-width: 600px;
+            width: 100%;
+        }
+        .time {
+            color: blue;
+        }
+
+        h1 {
+            text-align: center;
+            color: #454545;
+        }
+
+        input[type="text"] {
+            width: calc(100% - 120px);
+            max-width: 600px;
+            padding: 10px;
+            margin-right: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            padding: 10px 15px;
+            background-color: #4f74d9;
+            border: none;
+            color: white;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .recorded-text {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            overflow-wrap: break-word; 
+            word-break: break-all;
+            white-space: pre-wrap; 
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 10px;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .recorded-text div {
+            margin-bottom: 5px;
+        }
+
+        .recorded-text button {
+            padding: 7px 12px;
+            border-radius: 15px;
+            background-color: #4fadd9;
+            margin-left: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>记录</h1>
+    <h4>需长期保持在一个应用浏览该网页。</h4>
+    <div class="box">
+        <input type="text" id="textInput" placeholder="输入文本">
+        <button onclick="writeCookie()">写入</button>
+    </div>
+    
+    <div id="display" style="width: 100%;"></div>
+    <script>
+        // 写入 cookie
+        function writeCookie() {
+            var text = document.getElementById("textInput").value;
+            var recordedTexts = getRecordedTexts();
+            var recordedTime = new Date().toLocaleString('zh-CN', {timeZone: 'Asia/Shanghai'});
+            recordedTexts.push({text: text, time: recordedTime});
+            document.cookie = "recordedTexts=" + encodeURIComponent(JSON.stringify(recordedTexts));
+            displayTexts();
+        }
+        
+        // 获取已记录的文本
+        function getRecordedTexts() {
+            var cookies = document.cookie.split("; ");
+            var recordedTexts = [];
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = cookies[i].split("=");
+                if (cookie[0] === "recordedTexts") {
+                    recordedTexts = JSON.parse(decodeURIComponent(cookie[1]));
+                    break;
+                }
+            }
+            return recordedTexts;
+        }
+        
+        // 删除指定文本
+        function deleteText(index) {
+            var recordedTexts = getRecordedTexts();
+            recordedTexts.splice(index, 1);
+            document.cookie = "recordedTexts=" + encodeURIComponent(JSON.stringify(recordedTexts));
+            displayTexts();
+        }
+        
+        // 显示文本
+        function displayTexts() {
+            var recordedTexts = getRecordedTexts();
+            var displayDiv = document.getElementById("display");
+            displayDiv.innerHTML = ""; // 清空之前的内容
+            
+            for (var i = 0; i < recordedTexts.length; i++) {
+                var recordedText = recordedTexts[i].text;
+                var recordedTime = recordedTexts[i].time;
+                var textContainer = document.createElement("div");
+                textContainer.className = "recorded-text";
+
+                // 添加时间
+                var timeDiv = document.createElement("div");
+                timeDiv.className = "time";
+                timeDiv.textContent = recordedTime;
+                textContainer.appendChild(timeDiv);
+
+                // 添加文本
+                var textDiv = document.createElement("div");
+                textDiv.textContent =  recordedText;
+                textContainer.appendChild(textDiv);
+
+                // 添加删除按钮
+                var deleteButton = document.createElement("button");
+                deleteButton.textContent = "删除";
+                deleteButton.onclick = (function(index) {
+                    return function() {
+                        deleteText(index);
+                    };
+                })(i); // 使用立即执行函数传递索引
+                textContainer.appendChild(deleteButton);
+
+                displayDiv.appendChild(textContainer);
+                displayDiv.appendChild(document.createElement("hr")); // 添加水平线
+            }
+        }
+        
+        // 页面加载时显示已记录的文本
+        window.onload = function() {
+            displayTexts();
+        };
+    </script>
+</body>
+</html>
