@@ -79,6 +79,18 @@
         a {
             word-wrap: break-word;
         }
+        #shareBtn {
+            padding: 5px 10px;
+            font-size: 16px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #shareBtn:hover {
+            background-color: #0056b3;
+        }
     </style>
 <script>
 (function(w, d) {
@@ -147,7 +159,26 @@
 
 <div class="footer">
    分享给更多的人，让网站更活跃！
+   <button id="shareBtn">点击</button>
 </div>
+<script>
+    document.getElementById('shareBtn').addEventListener('click', async () => {
+        if (navigator.share) {
+            try {
+                await navigator.share({
+                    title: document.title,
+                    text: '看看这个页面！',
+                    url: window.location.href
+                });
+                console.log('页面分享成功');
+            } catch (err) {
+                console.error('分享出错:', err);
+            }
+        } else {
+            alert('您的浏览器不支持 Web Share API。');
+        }
+    });
+</script>
 
 </body>
 </html>
