@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>黑雨商店</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 0;
+            text-align: center;
+        }
+        .product-card, .payment-card {
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            max-width: 300px;
+            margin: 40px 15px ;
+        }
+        .payment-card {
+            max-width: 80%;
+            width: 500px;
+        }
+
+        .product-card img, .payment-card img {
+            border-radius: 10px;
+            max-width: 100%;
+            height: auto;
+        }
+        .product-title, .payment-title {
+            font-size: 20px;
+            margin: 10px 0;
+        }
+        .product-description {
+            color: #666;
+            margin: 10px 0;
+        }
+        .product-price, .payment-price {
+            font-size: 1.5em;
+            color: #e67e22;
+            margin: 10px 0;
+        }
+        .buy-button, .return-button {
+            background-color: #e67e22;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 15px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-top: 10px;
+        }
+        .return-button {
+            background-color: rgb(75, 75, 75);
+        }
+        .buy-button:hover {
+            background-color: #d35400;
+        }
+        .return-button:hover {
+            background-color: rgb(41, 41, 41);
+        }
+        .payment-message {
+            margin: 20px 0;
+            font-size: 18px;
+            color: #333;
+        }
+        .product-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+    </style>
+    <script src="https://www.paypal.com/sdk/js?client-id=AROcnsZ7Ze60pAINayQGRvZaWS0hOKMS0yUGMd3MrBi40jYhih0jmRjIMO0VtiVj1MzOVgG3BDBss4GY"></script>
+    <script>
+        const products = [
+            { id: 1, title: "黑客工具 | badusb", description: "已烧录好c程序代码，配备arduino micro和usb转接。即插即可网络下载并执行锁屏程序。", price: "9.50", imgSrc: "images/0.jpg" },
+            { id: 2, title: "远控 | 电话拨号控制器", description: "已烧录好c程序代码，配备arduino uno，MT8870模块和线缆。在另一台手机可以进行拨号远程控制", price: "11.00", imgSrc: "images/1.jpg" },
+
+        ];
+
+        function createProductCards() {
+            const productContainer = document.createElement('div');
+            productContainer.className = 'product-container';
+            products.forEach(product => {
+                const productCard = `
+                    <div class="product-card">
+                        <img src="${product.imgSrc}" alt="无图片">
+                        <div class="product-title">${product.title}</div>
+                        <div class="product-description">${product.description}</div>
+                        <div class="product-price">$${product.price}</div>
+                        <button class="buy-button" onclick="redirectToPayPal('${product.price}')">购买商品</button>
+                    </div>
+                `;
+                productContainer.innerHTML += productCard;
+            });
+            document.body.innerHTML = '';
+            document.body.appendChild(productContainer);
+        }
+
+        function redirectToPayPal(price) {
+            document.body.innerHTML = `
+                <div class="payment-card">
+                    <div class="payment-title">支付 | 黑雨商店</div>
+                    <div class="payment-message">您将支付以下金额：</div>
+                    <div class="payment-price">$${price}</div>
+                    <div id="paypal-button-container"></div>
+                    <button class="return-button" onclick="createProductCards()">返回</button>
+                </div>
+            `;
+            setupPayPalButton(price);  // 进入支付页面并设置按钮
+        }
+
+        function setupPayPalButton(amount) {
+            paypal.Buttons({
+                createOrder: function(data, actions) {
+                    return actions.order.create({
+                        purchase_units: [{
+                            amount: {
+                                value: amount
+                            }
+                        }]
+                    });
+                },
+                onApprove: function(data, actions) {
+                    return actions.order.capture().then(function(details) {
+                        alert('支付成功: ' + details.payer.name.given_name);
+                        createProductCards();  // 支付成功后返回商品卡片
+                    });
+                },
+                onError: function(err) {
+                    console.error(err);
+                    alert('支付失败，请重试。');
+                }
+            }).render('#paypal-button-container');  // 渲染按钮
+        }
+
+        window.onload = createProductCards;  // 页面加载时创建商品卡片
+    </script>
+</head>
+<body>
+</body>
+</html>
