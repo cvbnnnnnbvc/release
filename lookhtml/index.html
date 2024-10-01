@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML 代码查看器 </title>
+    <!-- 引入 Prism.js 样式表 -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        #urlInput {
+            width: 300px;
+            max-width: 60%;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+        #codeOutput {
+            margin-top: 20px;
+            max-height: 400px;
+            overflow-y: auto;
+            position: relative;
+        }
+        pre {
+            white-space: pre-wrap;
+        }
+        /* 复制按钮样式 */
+        .copy-btn {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background-color: #333;
+            color: white;
+            border: none;
+            padding: 8px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .copy-btn:hover {
+            background-color: #555;
+        }
+        .but {
+            color: #001aff;
+            text-decoration: none;
+            background-color: #ff69b4;
+            padding: 10px;
+            border: 2px solid black;
+            box-shadow: 3px 3px 0 #000;
+        }
+        span {
+            font-family: 'Press Start 2P', cursive;
+            color: blue;
+            text-shadow: 2px 2px red;
+        }
+    </style>
+</head>
+<body>
+    <h2>网址 <span>HTML</span> 源代码查看器</h2>
+    <input type="text" id="urlInput" placeholder="输入网址">
+    <button onclick="fetchHTML()" class="but">获取 HTML</button>
+
+    <div id="codeContainer" style="position: relative;">
+        <button class="copy-btn" onclick="copyToClipboard()">复制代码</button>
+        <pre><code id="codeOutput" class="language-html"></code></pre>
+    </div>
+
+    <!-- 引入 Prism.js 库 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-html.min.js"></script>
+
+    <script>
+        function ensureUrlProtocol(url) {
+            // 如果没有 http:// 或 https:// 协议，默认添加 https://
+            if (!url.startsWith('http://') && !url.startsWith('https://')) {
+                url = 'https://' + url;
+            }
+            return url;
+        }
+
+        async function fetchHTML() {
+            let url = document.getElementById('urlInput').value;
+            url = ensureUrlProtocol(url); // 检查并添加协议
+
+            try {
+                const response = await fetch(`https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`);
+                if (!response.ok) {
+                    throw new Error("网络请求失败");
+                }
+                const html = await response.text();
+                document.getElementById('codeOutput').textContent = html;
+                
+                // 调用 Prism.js 重新渲染高亮
+                Prism.highlightElement(document.getElementById('codeOutput'));
+            } catch (error) {
+                document.getElementById('codeOutput').textContent = `错误：${error.message}`;
+            }
+        }
+
+        function copyToClipboard() {
+            // 复制代码到剪贴板
+            const code = document.getElementById('codeOutput').textContent;
+            const tempTextArea = document.createElement('textarea');
+            tempTextArea.value = code;
+            document.body.appendChild(tempTextArea);
+            tempTextArea.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempTextArea);
+            alert('代码已复制到剪贴板！');
+        }
+    </script>
+
+</body>
+</html>
