@@ -142,6 +142,49 @@
             margin-bottom: 15px;
             list-style-type: none;
         }
+
+        .code-container {
+      background-color: #1e1e1e; /* 黑色背景 */
+      color: white; /* 白色字体 */
+      border-radius: 8px;
+      margin: 20px;
+      position: relative;
+      padding: 10px;
+      font-family: "Courier New", Courier, monospace;
+    }
+    .code-header {
+      background-color: rgb(101, 86, 166); /* 紫色上沿 */
+      color: white;
+      padding: 5px 10px;
+      font-size: 16px;
+      border-radius: 8px 8px 0 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: bold;
+    }
+
+    .code-header .copy-btn {
+      background-color: rgb(101, 86, 166); /* 紫色按钮 */
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      cursor: pointer;
+      border-radius: 4px;
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    .code-header .copy-btn:hover {
+      background-color: #551ba6; /* 鼠标悬停时按钮变色 */
+    }
+    pre {
+      white-space: pre-wrap; /* 使代码换行 */
+      word-wrap: break-word; /* 防止长行代码溢出 */
+      margin: 10px 0 0 0;
+      font-size: 14px;
+      margin-left: 15px;
+    }
     </style>
 <script>
 (function(w, d) {
@@ -186,7 +229,15 @@
                         （比特信）去中心化的【Bitmessage】
                         <button onclick="window.open('https://wiki.bitmessage.org', '_blank');">访问 WiKi</button>
                     </p>
-                    <p>我们的<strong>联系地址：</strong>M-2cXxKEqTxoGjypcDKwE82BUPZNHbKLBiP6</p>
+                    <div class="code-container">
+                        <div class="code-header">
+                            <span>我们的 Bitmessage 联系地址</span>
+                            <button class="copy-btn" onclick="copyCode('code-block-3')">复制</button>
+                        </div>
+                        <pre id="code-block-3">
+M-2cXxKEqTxoGjypcDKwE82BUPZNHbKLBiP6
+                        </pre>
+                    </div>
                     <p>我们的<strong>去中心化推文：</strong>（类似于 Twitter，但是没有机构管控）
                         <button onclick="window.open('https://app.ethtweet.io/#/tweet/detail?id=2zFXKegWLFxHZ4EM3uLC4Xrvt9F5tPjkSRDsjDyXF7tYUhLeWqwKAzu8YeEKcbUv3CcL1SnrnFQHYLGFjKxF46nN', '_blank');">打开访问</button>
                     </p>
@@ -248,6 +299,17 @@
         }
     });
 </script>
-
+<script>
+    function copyCode(blockId) {
+      const codeBlock = document.getElementById(blockId);
+      const range = document.createRange();
+      range.selectNode(codeBlock);
+      window.getSelection().removeAllRanges();
+      window.getSelection().addRange(range);
+      document.execCommand('copy');
+      window.getSelection().removeAllRanges();
+      alert('地址链接：' + codeBlock.innerText.trim() + ' 已复制到粘贴板，请打开对应的匿名软件客户端应用该链接。');
+    }
+  </script>
 </body>
 </html>
